@@ -29,6 +29,7 @@
     mtr
     ndisc6
     neofetch
+    neovim
     nixfmt
     # Broken as of June 1, 2023.
     # nix-linter
