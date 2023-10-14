@@ -99,3 +99,34 @@ install:	## ssh, partition, and install; requires ssh root@$(NIXADDR)
 		nixos-install --no-root-passwd && reboot; \
 	"
 
+.PHONY: bootstrap
+bootstrap:	## Initial configuration, run only immediately after install
+	rsync -av -e 'ssh $(SSH_OPTIONS) -p$(NIXPORT)' \
+		--exclude='.git/' \
+		$(CURDIR)/nixos/ root@$(NIXADDR):/etc/nixos/
+	ssh $(SSH_OPTIONS) -p$(NIXPORT) root@$(NIXADDR) " \
+		nixos-rebuild switch \
+	"
+
+.PHONY: push
+push:	## Copy NIX and SSH configuration to a bootstrapped machine
+	rsync -av -e 'ssh $(SSH_OPTIONS) -p$(NIXPORT)' \
+		--exclude='.git/' \
+		--rsync-path="sudo rsync" \
+		$(CURDIR)/ $(NIXUSER)@$(NIXADDR):/etc/nixos
+
+	rsync -av -e 'ssh $(SSH_OPTIONS)' \
+		--exclude='environment' \
+		$(HOME)/.ssh/ $(NIXUSER)@$(NIXADDR):~/.ssh
+
+.PHONY: test
+test:	## Run nixos-rebuild test
+	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
+		sudo nixos-rebuild test \
+	"
+
+.PHONY: switch
+switch:	## Run nixos-rebuild switch
+	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
+		sudo nixos-rebuild switch \
+	"
