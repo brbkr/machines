@@ -2,24 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-# coredns
-# hosts plugin: https://coredns.io/plugins/hosts/
-#   - ../../mdlayher/homelab/nixos/routnerr-3/coredns.nix
-#   - He has a go program write a JSON file that gets parsed
-#   - For my purposes, coredns is fine, but the hosts plugin with a static hosts file is easier
-#   - This means ./coredns/hosts
-#   - When we add the next server, we have to find a way to keep the IPs in sync
-
 { config, pkgs, ... }:
-
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./networking.nix
       ./pkgs.nix
-      ./users.nix
       ./services.nix
       ./system.nix
+      ./users.nix
     ];
 
   # This value determines the NixOS release from which the default
@@ -30,4 +22,3 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
 }
-

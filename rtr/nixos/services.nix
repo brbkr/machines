@@ -1,12 +1,23 @@
+{ ... }:
 {
-  # Services which run on all deployed machines.
   services = {
     fstrim.enable = true;
     fwupd.enable = true;
-    openssh.enable = true;
-    prometheus.exporters.node = {
+
+    # https://nixos.wiki/wiki/SSH_public_key_authentication
+    openssh = {
       enable = true;
-      enabledCollectors = [ "ethtool" "systemd" ];
+      settings.PermitRootLogin = "no";
+      settings.PasswordAuthentication = false;
+      settings.KbdInteractiveAuthentication = false;
+    };
+
+    # https://nixos.wiki/wiki/Tailscale
+    tailscale = {
+      enable = true;
+      interfaceName = "ts0";
+      permitCertUid = "caddy";
+      useRoutingFeatures = "server";
     };
   };
 }

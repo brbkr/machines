@@ -1,5 +1,6 @@
+{ ... }:
 let
-	secrets = import ./secrets.nix;
+  secrets = import ./secrets.nix;
 in
 {
   # Put ~/bin in PATH.

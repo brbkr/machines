@@ -1,3 +1,4 @@
+{ ... }:
 {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -10,7 +11,12 @@
   # Enable firmware updates when possible.
   hardware.enableRedistributableFirmware = true;
 
+  # FYI- Automatic upgrades locked the system once
   system.autoUpgrade.enable = true;
+
+  # Build mandb -- apropos and man -k support
+  # https://nixos.wiki/wiki/Apropos
+  documentation.man.generateCaches = true;
 
   # Make systemd manage the hardware watchdog.
   systemd.watchdog.runtimeTime = "60s";
