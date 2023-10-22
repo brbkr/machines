@@ -19,6 +19,7 @@
   documentation.man.generateCaches = true;
 
   # Make systemd manage the hardware watchdog.
+  # http://0pointer.de/blog/projects/watchdog.html
   systemd.watchdog.runtimeTime = "60s";
 
   # Console configuration.
